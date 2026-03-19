@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Easy Home Fitness</title>
+  <style>
+    body {
+      font-family: Arial;
+      background: #111;
+      color: white;
+      margin: 0;
+    }
+
+    h2 {
+      text-align: center;
+      padding: 15px;
+    }
+
+    .card {
+      background: white;
+      color: black;
+      margin: 15px;
+      padding: 20px;
+      border-radius: 20px;
+    }
+
+    .counter {
+      font-size: 40px;
+      text-align: center;
+      margin: 10px 0;
+    }
+
+    button {
+      padding: 15px;
+      margin: 5px;
+      font-size: 18px;
+      border-radius: 10px;
+      border: none;
+      background: orange;
+      color: white;
+      width: 30%;
+    }
+
+    .buttons {
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+
+<h2>Easy Home Fitness</h2>
+
+<div class="card">
+  <h3>Squats</h3>
+  <div class="counter" id="squats">0</div>
+  <div class="buttons">
+    <button onclick="add('squats',10)">+10</button>
+    <button onclick="add('squats',5)">+5</button>
+    <button onclick="add('squats',1)">+1</button>
+  </div>
+</div>
+
+<div class="card">
+  <h3>Push Ups</h3>
+  <div class="counter" id="pushups">0</div>
+  <div class="buttons">
+    <button onclick="add('pushups',10)">+10</button>
+    <button onclick="add('pushups',5)">+5</button>
+    <button onclick="add('pushups',1)">+1</button>
+  </div>
+</div>
+
+<script>
+let data = JSON.parse(localStorage.getItem("fitness")) || {
+  squats: 0,
+  pushups: 0
+};
+
+function update() {
+  document.getElementById("squats").innerText = data.squats;
+  document.getElementById("pushups").innerText = data.pushups;
+}
+
+function add(type, value) {
+  data[type] += value;
+  localStorage.setItem("fitness", JSON.stringify(data));
+  update();
+}
+
+update();
+</script>
+
+</body>
+</html>
