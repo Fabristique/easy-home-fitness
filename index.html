@@ -1,95 +1,741 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Easy Home Fitness</title>
   <style>
-    body {
-      font-family: Arial;
-      background: #111;
-      color: white;
-      margin: 0;
+    :root{
+      --bg:#111214;
+      --bg2:#1a1b1f;
+      --card:#ffffff;
+      --text:#111214;
+      --muted:#70757f;
+      --accent:#f2b631;
+      --accent-dark:#e0a313;
+      --green:#18c29c;
+      --green-soft:#c9f1e8;
+      --border:#e8e8e8;
+      --shadow:0 12px 30px rgba(0,0,0,.18);
+      --radius:24px;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;font-family:Arial,Helvetica,sans-serif;background:linear-gradient(180deg,#2a2b31 0%, #121316 35%, #0f1012 100%);color:white}
+    body{min-height:100vh}
+    .app{max-width:430px;margin:0 auto;min-height:100vh;position:relative;padding-bottom:88px}
+    .topbar{
+      position:sticky;top:0;z-index:20;
+      background:var(--accent);
+      color:white;
+      padding:16px 16px 14px;
+      box-shadow:0 4px 16px rgba(0,0,0,.18);
+    }
+    .topbar-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+    .top-title{font-size:20px;font-weight:700;line-height:1.2}
+    .top-sub{font-size:12px;opacity:.9;margin-top:4px}
+    .premium{
+      background:#fff;color:#333;border:none;border-radius:14px;
+      padding:10px 14px;font-weight:700;box-shadow:0 6px 16px rgba(0,0,0,.15);
+      cursor:pointer;font-size:13px;
+    }
+    .page{padding:14px}
+    .card{
+      background:var(--card);color:var(--text);border-radius:var(--radius);
+      box-shadow:var(--shadow);overflow:hidden;margin-bottom:16px;
     }
 
-    h2 {
-      text-align: center;
-      padding: 15px;
+    /* exercise list */
+    .exercise-row{
+      display:flex;align-items:center;min-height:126px;cursor:pointer;
+    }
+    .exercise-main{display:flex;align-items:center;gap:16px;flex:1;padding:18px}
+    .exercise-visual{
+      width:82px;height:82px;border-radius:22px;display:flex;align-items:center;justify-content:center;
+      font-size:42px;background:#fff7df;flex-shrink:0;
+      border:1px solid #f7e3a2;
+    }
+    .exercise-name{font-size:22px;font-weight:700;margin-bottom:6px}
+    .exercise-meta{font-size:14px;color:var(--muted);line-height:1.4}
+    .exercise-arrow{
+      width:70px;align-self:stretch;background:var(--accent);display:flex;align-items:center;justify-content:center;
+      color:white;font-size:30px;font-weight:bold;
     }
 
-    .card {
-      background: white;
-      color: black;
-      margin: 15px;
-      padding: 20px;
-      border-radius: 20px;
+    /* detail */
+    .detail-head{
+      padding:18px 18px 10px;
+      display:flex;align-items:center;justify-content:space-between;
+      color:var(--text);
+    }
+    .detail-title{font-size:19px;font-weight:700}
+    .ring-wrap{padding:8px 18px 18px;display:flex;flex-direction:column;align-items:center}
+    .ring-box{position:relative;width:245px;height:245px}
+    .ring-box svg{display:block;width:100%;height:100%;transform:rotate(-90deg)}
+    .ring-center{
+      position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;
+      color:var(--text);text-align:center;
+    }
+    .ring-emoji{font-size:64px;line-height:1}
+    .goal-btn{
+      margin-top:10px;border:none;background:#fff;border-radius:999px;padding:8px 14px;
+      box-shadow:0 8px 18px rgba(0,0,0,.12);cursor:pointer;font-size:13px;font-weight:700;color:#555;
+    }
+    .big-count{font-size:58px;font-weight:300;color:var(--text)}
+    .big-count small{font-size:22px;color:#767676}
+    .muted-center{color:var(--muted);font-size:14px;margin-top:6px}
+    .step-btn{
+      background:var(--accent);color:white;border:none;border-radius:18px;
+      width:100%;padding:14px 14px;margin-top:10px;
+      display:flex;align-items:center;justify-content:space-between;
+      font-size:25px;font-weight:700;cursor:pointer;
+      box-shadow:0 8px 18px rgba(242,182,49,.28);
+    }
+    .step-btn .label{font-size:22px;font-weight:600}
+    .step-btn .mini{width:46px;text-align:center}
+    .section-title{
+      padding:18px 18px 6px;display:flex;align-items:center;justify-content:space-between;
+      color:var(--text);font-size:18px;font-weight:700
     }
 
-    .counter {
-      font-size: 40px;
-      text-align: center;
-      margin: 10px 0;
+    /* charts */
+    .chart-wrap{padding:0 12px 12px}
+    .simple-chart{
+      height:190px;border-radius:18px;padding:12px 8px 8px;position:relative;
+      background:linear-gradient(180deg,#fafafa,#f4f4f4);
+      border:1px solid var(--border);
+      overflow:hidden;
+    }
+    .gridline{
+      position:absolute;left:10px;right:10px;height:1px;background:#e8e8e8;
+    }
+    .bars{
+      position:absolute;left:8px;right:8px;bottom:28px;top:14px;
+      display:flex;align-items:flex-end;gap:8px;
+    }
+    .bar-col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}
+    .bar{
+      width:100%;max-width:34px;border-radius:10px 10px 0 0;
+      background:linear-gradient(180deg,var(--green),#11a884);
+      min-height:4px;
+      box-shadow:0 4px 10px rgba(24,194,156,.25);
+    }
+    .bar-val{font-size:12px;color:#777;margin-bottom:6px;height:14px}
+    .bar-label{position:absolute;bottom:-24px;font-size:11px;color:#777;white-space:nowrap}
+    .list{border-top:1px solid var(--border)}
+    .list-row{
+      display:flex;justify-content:space-between;align-items:center;
+      padding:16px 18px;border-top:1px solid var(--border);color:var(--text);font-size:16px;
+    }
+    .list-row .light{color:var(--muted)}
+
+    /* stats filters */
+    .filters{display:flex;gap:12px;margin-bottom:16px}
+    .select{
+      flex:1;background:#3a3b42;border:1px solid #4a4b53;color:white;
+      border-radius:16px;padding:14px 12px;font-size:16px;outline:none;
     }
 
-    button {
-      padding: 15px;
-      margin: 5px;
-      font-size: 18px;
-      border-radius: 10px;
-      border: none;
-      background: orange;
-      color: white;
-      width: 30%;
+    /* awards */
+    .award{
+      padding:18px;border-radius:24px;background:white;color:var(--text);
+      box-shadow:var(--shadow);margin-bottom:14px;
+    }
+    .award.unlocked{
+      background:linear-gradient(135deg,#f7d97a,#f2b631);
+    }
+    .award-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+    .award-title{font-size:20px;font-weight:700}
+    .award-desc{font-size:14px;color:#5d5d5d;margin-top:6px;line-height:1.35}
+    .award.unlocked .award-desc{color:#4b3a03}
+    .pill{
+      background:rgba(0,0,0,.08);padding:8px 12px;border-radius:999px;font-size:13px;font-weight:700;white-space:nowrap
+    }
+    .progress{
+      height:12px;background:rgba(0,0,0,.08);border-radius:999px;overflow:hidden;margin-top:14px
+    }
+    .progress > div{
+      height:100%;background:var(--green);border-radius:999px
     }
 
-    .buttons {
-      text-align: center;
+    /* bottom nav */
+    .bottom-nav{
+      position:fixed;left:50%;transform:translateX(-50%);
+      bottom:0;width:100%;max-width:430px;background:#fff;color:#2b2b2b;
+      display:flex;justify-content:space-around;align-items:center;
+      padding:10px 6px calc(10px + env(safe-area-inset-bottom));
+      box-shadow:0 -6px 18px rgba(0,0,0,.12);z-index:50;
+      border-top:1px solid #ececec;
     }
+    .nav-btn{
+      background:none;border:none;color:#555;display:flex;flex-direction:column;align-items:center;gap:6px;
+      font-size:12px;cursor:pointer;min-width:74px;
+    }
+    .nav-btn.active{color:var(--accent-dark);font-weight:700}
+    .nav-icon{font-size:22px;line-height:1}
+    .fab{
+      width:62px;height:62px;border-radius:50%;
+      border:none;background:var(--accent);color:#fff;font-size:34px;font-weight:700;
+      box-shadow:0 10px 22px rgba(242,182,49,.35);margin-top:-30px;cursor:pointer;
+    }
+
+    /* back button */
+    .back-btn{
+      border:none;background:rgba(255,255,255,.2);color:white;width:38px;height:38px;
+      border-radius:12px;font-size:20px;cursor:pointer
+    }
+
+    /* utility */
+    .hidden{display:none}
+    .small-card{background:#fff;color:var(--text);border-radius:20px;box-shadow:var(--shadow);padding:18px}
+    .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+    .metric-value{font-size:34px;font-weight:700}
+    .metric-label{color:var(--muted);font-size:14px;margin-top:6px}
   </style>
 </head>
-
 <body>
+  <div class="app">
+    <header class="topbar">
+      <div class="topbar-row">
+        <div style="display:flex;align-items:center;gap:10px">
+          <button id="backBtn" class="back-btn hidden">←</button>
+          <div>
+            <div class="top-title" id="topTitle">Easy Home Fitness</div>
+            <div class="top-sub" id="topSub">Compteur simple et motivant</div>
+          </div>
+        </div>
+        <button class="premium">★ Local App</button>
+      </div>
+    </header>
 
-<h2>Easy Home Fitness</h2>
+    <main class="page" id="page"></main>
 
-<div class="card">
-  <h3>Squats</h3>
-  <div class="counter" id="squats">0</div>
-  <div class="buttons">
-    <button onclick="add('squats',10)">+10</button>
-    <button onclick="add('squats',5)">+5</button>
-    <button onclick="add('squats',1)">+1</button>
+    <nav class="bottom-nav">
+      <button class="nav-btn active" data-tab="exercises">
+        <div class="nav-icon">⏱️</div>
+        <div>Exercices</div>
+      </button>
+      <button class="nav-btn" data-tab="stats">
+        <div class="nav-icon">📊</div>
+        <div>Statistiques</div>
+      </button>
+      <button class="fab" id="fabBtn">+</button>
+      <button class="nav-btn" data-tab="awards">
+        <div class="nav-icon">🏆</div>
+        <div>Awards</div>
+      </button>
+      <button class="nav-btn" data-tab="goals">
+        <div class="nav-icon">🎯</div>
+        <div>Objectifs</div>
+      </button>
+    </nav>
   </div>
-</div>
 
-<div class="card">
-  <h3>Push Ups</h3>
-  <div class="counter" id="pushups">0</div>
-  <div class="buttons">
-    <button onclick="add('pushups',10)">+10</button>
-    <button onclick="add('pushups',5)">+5</button>
-    <button onclick="add('pushups',1)">+1</button>
-  </div>
-</div>
+  <script>
+    const STORAGE_KEY = "easy-home-fitness-v2";
 
-<script>
-let data = JSON.parse(localStorage.getItem("fitness")) || {
-  squats: 0,
-  pushups: 0
-};
+    const EXERCISES = [
+      { id:"squats",   name:"Squats",   emoji:"🏋️", color:"#fff5d9" },
+      { id:"pushups",  name:"Push Ups", emoji:"💪", color:"#ffe6d6" },
+      { id:"situps",   name:"Sit Ups",  emoji:"🔥", color:"#ffe4df" },
+      { id:"lunges",   name:"Lunges",   emoji:"🦵", color:"#e8f8df" },
+      { id:"burpees",  name:"Burpees",  emoji:"⚡", color:"#dff4ff" },
+    ];
 
-function update() {
-  document.getElementById("squats").innerText = data.squats;
-  document.getElementById("pushups").innerText = data.pushups;
-}
+    const DEFAULT_GOALS = {
+      squats: 30,
+      pushups: 20,
+      situps: 25,
+      lunges: 20,
+      burpees: 10
+    };
 
-function add(type, value) {
-  data[type] += value;
-  localStorage.setItem("fitness", JSON.stringify(data));
-  update();
-}
+    const AWARDS = [
+      { id:"a1", title:"Premier pas", desc:"Faire au moins 10 répétitions sur une journée", type:"bestDaily", target:10 },
+      { id:"a2", title:"Objectif atteint", desc:"Compléter un objectif journalier au moins 1 fois", type:"goalDays", target:1 },
+      { id:"a3", title:"Centurion", desc:"Cumuler 100 répétitions au total", type:"total", target:100 },
+      { id:"a4", title:"Régularité", desc:"Avoir 3 jours actifs consécutifs", type:"streak", target:3 },
+      { id:"a5", title:"Machine", desc:"Cumuler 500 répétitions au total", type:"total", target:500 },
+      { id:"a6", title:"Discipline", desc:"Atteindre 7 jours actifs consécutifs", type:"streak", target:7 },
+    ];
 
-update();
-</script>
+    let state = loadState();
 
+    function loadState(){
+      try{
+        const raw = JSON.parse(localStorage.getItem(STORAGE_KEY));
+        if(!raw) throw new Error("no");
+        return {
+          goals: { ...DEFAULT_GOALS, ...(raw.goals || {}) },
+          history: raw.history || {},
+          currentTab: raw.currentTab || "exercises",
+          selectedExercise: raw.selectedExercise || "squats",
+          exerciseView: raw.exerciseView || null,
+          statsExercise: raw.statsExercise || "squats",
+          statsDays: raw.statsDays || 7,
+        };
+      }catch(e){
+        return {
+          goals: { ...DEFAULT_GOALS },
+          history: {},
+          currentTab: "exercises",
+          selectedExercise: "squats",
+          exerciseView: null,
+          statsExercise: "squats",
+          statsDays: 7,
+        };
+      }
+    }
+
+    function saveState(){
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    function todayKey(){
+      const d = new Date();
+      return d.toISOString().slice(0,10);
+    }
+
+    function dateLabel(dateStr){
+      const d = new Date(dateStr + "T12:00:00");
+      return d.toLocaleDateString("fr-BE",{day:"2-digit",month:"2-digit"});
+    }
+
+    function weekdayLabel(dateStr){
+      const d = new Date(dateStr + "T12:00:00");
+      return d.toLocaleDateString("fr-BE",{weekday:"long"});
+    }
+
+    function shortWeekday(dateStr){
+      const d = new Date(dateStr + "T12:00:00");
+      return d.toLocaleDateString("fr-BE",{weekday:"short"});
+    }
+
+    function getDates(days){
+      const arr = [];
+      const now = new Date();
+      for(let i=days-1;i>=0;i--){
+        const d = new Date(now);
+        d.setDate(now.getDate()-i);
+        arr.push(d.toISOString().slice(0,10));
+      }
+      return arr;
+    }
+
+    function getExercise(id){
+      return EXERCISES.find(e=>e.id===id);
+    }
+
+    function getCount(date, exId){
+      return (state.history[date] && state.history[date][exId]) || 0;
+    }
+
+    function setCount(date, exId, value){
+      if(!state.history[date]) state.history[date] = {};
+      state.history[date][exId] = Math.max(0, value);
+      saveState();
+      render();
+    }
+
+    function addCount(exId, delta){
+      const today = todayKey();
+      const current = getCount(today, exId);
+      setCount(today, exId, current + delta);
+    }
+
+    function setGoal(exId){
+      const current = state.goals[exId] || 1;
+      const ex = getExercise(exId);
+      const value = prompt(`Nouvel objectif pour ${ex.name}`, current);
+      if(value === null) return;
+      const n = parseInt(value,10);
+      if(isNaN(n) || n <= 0){
+        alert("Entre un nombre supérieur à 0.");
+        return;
+      }
+      state.goals[exId] = n;
+      saveState();
+      render();
+    }
+
+    function getSeries(exId, days){
+      return getDates(days).map(date => ({
+        date,
+        label: dateLabel(date),
+        short: shortWeekday(date),
+        day: weekdayLabel(date),
+        value: getCount(date, exId)
+      }));
+    }
+
+    function getTotals(){
+      const dates = Object.keys(state.history).sort();
+      let total = 0;
+      let bestDaily = 0;
+      let goalDays = 0;
+      let streak = 0;
+      let bestStreak = 0;
+      let bestDay = {date:null, value:0};
+
+      for(const date of dates){
+        const dayData = state.history[date] || {};
+        const sum = EXERCISES.reduce((acc,ex)=>acc + (dayData[ex.id] || 0), 0);
+        total += sum;
+        if(sum > bestDay.value) bestDay = {date, value:sum};
+
+        const maxExercise = EXERCISES.reduce((m,ex)=>Math.max(m, dayData[ex.id] || 0), 0);
+        if(maxExercise > bestDaily) bestDaily = maxExercise;
+
+        const reachedGoal = EXERCISES.some(ex => (dayData[ex.id] || 0) >= (state.goals[ex.id] || 0));
+        if(reachedGoal) goalDays++;
+
+        if(sum > 0){
+          streak++;
+          if(streak > bestStreak) bestStreak = streak;
+        }else{
+          streak = 0;
+        }
+      }
+      return { total, bestDaily, goalDays, streak: bestStreak, bestDay };
+    }
+
+    function getAwardsProgress(){
+      const totals = getTotals();
+      return AWARDS.map(a=>{
+        let current = 0;
+        if(a.type === "bestDaily") current = totals.bestDaily;
+        if(a.type === "goalDays") current = totals.goalDays;
+        if(a.type === "total") current = totals.total;
+        if(a.type === "streak") current = totals.streak;
+        return {
+          ...a,
+          current,
+          unlocked: current >= a.target,
+          ratio: Math.min(1, current / a.target)
+        };
+      });
+    }
+
+    function ringSvg(value, goal){
+      const safeGoal = Math.max(1, goal);
+      const ratio = Math.min(1, value / safeGoal);
+      const size = 245;
+      const stroke = 18;
+      const radius = (size - stroke) / 2;
+      const c = 2 * Math.PI * radius;
+      const offset = c * (1 - ratio);
+      return `
+        <svg viewBox="0 0 ${size} ${size}">
+          <circle cx="${size/2}" cy="${size/2}" r="${radius}" stroke="#d8f6ee" stroke-width="${stroke}" fill="none"></circle>
+          <circle cx="${size/2}" cy="${size/2}" r="${radius}" stroke="#18c29c" stroke-width="${stroke}" fill="none"
+            stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${offset}"></circle>
+        </svg>
+      `;
+    }
+
+    function renderBarChart(series){
+      const max = Math.max(1, ...series.map(s=>s.value));
+      const grid = [20,40,60,80].map(v=>`<div class="gridline" style="top:${v}%"></div>`).join("");
+      const bars = series.map(s=>{
+        const h = Math.max(4, (s.value / max) * 100);
+        return `
+          <div class="bar-col">
+            <div class="bar-val">${s.value}</div>
+            <div class="bar" style="height:${h}%"></div>
+            <div class="bar-label">${s.short}</div>
+          </div>
+        `;
+      }).join("");
+      return `
+        <div class="simple-chart">
+          ${grid}
+          <div class="bars">${bars}</div>
+        </div>
+      `;
+    }
+
+    function renderExerciseList(){
+      const today = todayKey();
+      return `
+        ${EXERCISES.map(ex=>{
+          const val = getCount(today, ex.id);
+          const goal = state.goals[ex.id];
+          return `
+            <div class="card">
+              <div class="exercise-row" onclick="openExercise('${ex.id}')">
+                <div class="exercise-main">
+                  <div class="exercise-visual" style="background:${ex.color}">${ex.emoji}</div>
+                  <div>
+                    <div class="exercise-name">${ex.name}</div>
+                    <div class="exercise-meta">Aujourd'hui : ${val} / ${goal}</div>
+                    <div class="exercise-meta">Touchez pour ouvrir le compteur</div>
+                  </div>
+                </div>
+                <div class="exercise-arrow">›</div>
+              </div>
+            </div>
+          `;
+        }).join("")}
+      `;
+    }
+
+    function renderExerciseDetail(exId){
+      const ex = getExercise(exId);
+      const today = todayKey();
+      const value = getCount(today, exId);
+      const goal = state.goals[exId];
+      const series = getSeries(exId, 7);
+      return `
+        <div class="card">
+          <div class="detail-head">
+            <div class="detail-title">Progression du jour</div>
+            <button onclick="setGoal('${exId}')" style="border:none;background:#f5f5f5;padding:10px 12px;border-radius:12px;cursor:pointer">⚙️</button>
+          </div>
+          <div class="ring-wrap">
+            <div class="ring-box">
+              ${ringSvg(value, goal)}
+              <div class="ring-center">
+                <div class="ring-emoji">${ex.emoji}</div>
+                <button class="goal-btn" onclick="setGoal('${exId}')">Objectif : ${goal}</button>
+              </div>
+            </div>
+            <div class="big-count">${value} <small>/ ${goal}</small></div>
+            <div class="muted-center">${ex.name}</div>
+
+            <button class="step-btn" onclick="addCount('${exId}',10)">
+              <span class="mini">＋</span><span class="label">Ajouter 10</span><span class="mini">10</span>
+            </button>
+            <button class="step-btn" onclick="addCount('${exId}',5)">
+              <span class="mini">＋</span><span class="label">Ajouter 5</span><span class="mini">5</span>
+            </button>
+            <button class="step-btn" onclick="addCount('${exId}',1)">
+              <span class="mini">＋</span><span class="label">Ajouter 1</span><span class="mini">1</span>
+            </button>
+            <button class="step-btn" onclick="addCount('${exId}',-10)">
+              <span class="mini">－</span><span class="label">Retirer 10</span><span class="mini">10</span>
+            </button>
+            <button class="step-btn" onclick="addCount('${exId}',-5)">
+              <span class="mini">－</span><span class="label">Retirer 5</span><span class="mini">5</span>
+            </button>
+            <button class="step-btn" onclick="addCount('${exId}',-1)">
+              <span class="mini">－</span><span class="label">Retirer 1</span><span class="mini">1</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="section-title">
+            <span>Cette semaine</span>
+            <span>📈</span>
+          </div>
+          <div class="chart-wrap">
+            ${renderBarChart(series)}
+          </div>
+          <div class="list">
+            ${series.slice().reverse().map(row=>`
+              <div class="list-row">
+                <span style="text-transform:capitalize">${row.date === today ? "Aujourd'hui" : row.day}</span>
+                <span>${row.value} reps</span>
+              </div>
+            `).join("")}
+          </div>
+        </div>
+      `;
+    }
+
+    function renderStatsPage(){
+      const exId = state.statsExercise;
+      const ex = getExercise(exId);
+      const days = Number(state.statsDays);
+      const series = getSeries(exId, days);
+      const sum = series.reduce((a,b)=>a+b.value,0);
+      const totals = getTotals();
+
+      return `
+        <div class="filters">
+          <select class="select" onchange="changeStatsExercise(this.value)">
+            ${EXERCISES.map(e=>`<option value="${e.id}" ${e.id===exId?"selected":""}>${e.name}</option>`).join("")}
+          </select>
+
+          <select class="select" onchange="changeStatsDays(this.value)">
+            <option value="7" ${days===7?"selected":""}>7 jours</option>
+            <option value="30" ${days===30?"selected":""}>30 jours</option>
+            <option value="90" ${days===90?"selected":""}>90 jours</option>
+          </select>
+        </div>
+
+        <div class="card">
+          <div class="section-title">
+            <span>${sum} ${ex.name}</span>
+            <span>›</span>
+          </div>
+          <div class="chart-wrap">
+            ${renderBarChart(series)}
+          </div>
+          <div class="list">
+            ${series.slice().reverse().map(row=>`
+              <div class="list-row">
+                <span style="text-transform:capitalize">${row.date === todayKey() ? "Aujourd'hui" : `${row.day} · ${row.label}`}</span>
+                <span>${row.value} reps</span>
+              </div>
+            `).join("")}
+          </div>
+        </div>
+
+        <div class="stats-grid">
+          <div class="small-card">
+            <div class="metric-value">${totals.total}</div>
+            <div class="metric-label">Répétitions totales</div>
+          </div>
+          <div class="small-card">
+            <div class="metric-value">${totals.streak}</div>
+            <div class="metric-label">Meilleure série</div>
+          </div>
+        </div>
+
+        <div class="small-card" style="margin-top:12px">
+          <div class="metric-value">${totals.bestDay.value}</div>
+          <div class="metric-label">
+            ${totals.bestDay.date ? `Meilleur jour : ${new Date(totals.bestDay.date+"T12:00:00").toLocaleDateString("fr-BE")}` : "Pas encore de données"}
+          </div>
+        </div>
+      `;
+    }
+
+    function renderAwardsPage(){
+      const awards = getAwardsProgress();
+      return awards.map(a=>`
+        <div class="award ${a.unlocked ? "unlocked" : ""}">
+          <div class="award-head">
+            <div>
+              <div class="award-title">${a.title}</div>
+              <div class="award-desc">${a.desc}</div>
+            </div>
+            <div class="pill">${a.unlocked ? "Débloqué" : `${a.current}/${a.target}`}</div>
+          </div>
+          <div class="progress"><div style="width:${a.ratio*100}%"></div></div>
+        </div>
+      `).join("") + `
+        <div class="small-card" style="margin-top:14px">
+          <div style="font-size:18px;font-weight:700;color:#111">Réinitialiser</div>
+          <div style="margin-top:8px;color:#666;line-height:1.4">Supprime tout l'historique enregistré localement sur cet appareil.</div>
+          <button onclick="resetAll()" style="margin-top:14px;width:100%;padding:14px;border:none;border-radius:16px;background:#111;color:white;font-size:16px;cursor:pointer">
+            Supprimer l'historique
+          </button>
+        </div>
+      `;
+    }
+
+    function renderGoalsPage(){
+      return EXERCISES.map(ex=>`
+        <div class="card">
+          <div class="exercise-row" style="min-height:110px;cursor:default">
+            <div class="exercise-main">
+              <div class="exercise-visual" style="background:${ex.color}">${ex.emoji}</div>
+              <div style="flex:1">
+                <div class="exercise-name">${ex.name}</div>
+                <div class="exercise-meta">Objectif actuel : ${state.goals[ex.id]} reps</div>
+              </div>
+              <button onclick="setGoal('${ex.id}')" style="border:none;background:var(--accent);color:white;padding:12px 14px;border-radius:14px;font-weight:700;cursor:pointer">
+                Modifier
+              </button>
+            </div>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function render(){
+      const page = document.getElementById("page");
+      const topTitle = document.getElementById("topTitle");
+      const topSub = document.getElementById("topSub");
+      const backBtn = document.getElementById("backBtn");
+
+      document.querySelectorAll(".nav-btn").forEach(btn=>{
+        btn.classList.toggle("active", btn.dataset.tab === state.currentTab);
+      });
+
+      if(state.currentTab === "exercises" && state.exerciseView){
+        const ex = getExercise(state.exerciseView);
+        topTitle.textContent = ex.name;
+        topSub.textContent = "Suivi de la journée";
+        backBtn.classList.remove("hidden");
+        page.innerHTML = renderExerciseDetail(state.exerciseView);
+      }else{
+        backBtn.classList.add("hidden");
+
+        if(state.currentTab === "exercises"){
+          topTitle.textContent = "Easy Home Fitness";
+          topSub.textContent = "Choisis un exercice";
+          page.innerHTML = renderExerciseList();
+        }
+        if(state.currentTab === "stats"){
+          topTitle.textContent = "Mes statistiques";
+          topSub.textContent = "Historique et progression";
+          page.innerHTML = renderStatsPage();
+        }
+        if(state.currentTab === "awards"){
+          topTitle.textContent = "Awards";
+          topSub.textContent = "Objectifs récompensés";
+          page.innerHTML = renderAwardsPage();
+        }
+        if(state.currentTab === "goals"){
+          topTitle.textContent = "Objectifs";
+          topSub.textContent = "Modifier les objectifs journaliers";
+          page.innerHTML = renderGoalsPage();
+        }
+      }
+      saveState();
+    }
+
+    function openExercise(exId){
+      state.exerciseView = exId;
+      state.selectedExercise = exId;
+      saveState();
+      render();
+    }
+
+    function closeExercise(){
+      state.exerciseView = null;
+      saveState();
+      render();
+    }
+
+    function switchTab(tab){
+      state.currentTab = tab;
+      if(tab !== "exercises") state.exerciseView = null;
+      saveState();
+      render();
+    }
+
+    function changeStatsExercise(value){
+      state.statsExercise = value;
+      saveState();
+      render();
+    }
+
+    function changeStatsDays(value){
+      state.statsDays = Number(value);
+      saveState();
+      render();
+    }
+
+    function resetAll(){
+      if(confirm("Effacer tout l'historique ?")){
+        localStorage.removeItem(STORAGE_KEY);
+        state = loadState();
+        render();
+      }
+    }
+
+    document.getElementById("backBtn").addEventListener("click", closeExercise);
+    document.querySelectorAll(".nav-btn").forEach(btn=>{
+      btn.addEventListener("click", ()=>switchTab(btn.dataset.tab));
+    });
+    document.getElementById("fabBtn").addEventListener("click", ()=>{
+      switchTab("exercises");
+    });
+
+    render();
+  </script>
 </body>
 </html>
