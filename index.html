@@ -6,190 +6,493 @@
   <title>Easy Home Fitness</title>
   <style>
     :root{
-      --bg:#111214;
-      --bg2:#1a1b1f;
-      --card:#ffffff;
-      --text:#111214;
-      --muted:#70757f;
-      --accent:#f2b631;
-      --accent-dark:#e0a313;
-      --green:#18c29c;
-      --green-soft:#c9f1e8;
-      --border:#e8e8e8;
+      --bg:#0f1115;
+      --bg2:#171a21;
+      --card:#f7f8fa;
+      --text:#12151b;
+      --muted:#6d7480;
+      --accent:#5f6fff;
+      --accent-dark:#4e5ce0;
+      --accent-soft:#dfe4ff;
+      --green:#19b88a;
+      --green-soft:#d7f5eb;
+      --border:#e7eaf0;
       --shadow:0 12px 30px rgba(0,0,0,.18);
       --radius:24px;
     }
+
     *{box-sizing:border-box}
-    html,body{margin:0;padding:0;font-family:Arial,Helvetica,sans-serif;background:linear-gradient(180deg,#2a2b31 0%, #121316 35%, #0f1012 100%);color:white}
+    html,body{
+      margin:0;
+      padding:0;
+      font-family:Arial,Helvetica,sans-serif;
+      background:linear-gradient(180deg,#252a35 0%, #131720 36%, #0d1016 100%);
+      color:white
+    }
     body{min-height:100vh}
-    .app{max-width:430px;margin:0 auto;min-height:100vh;position:relative;padding-bottom:88px}
+
+    .app{
+      max-width:430px;
+      margin:0 auto;
+      min-height:100vh;
+      position:relative;
+      padding-bottom:82px;
+    }
+
     .topbar{
-      position:sticky;top:0;z-index:20;
-      background:var(--accent);
+      position:sticky;
+      top:0;
+      z-index:20;
+      background:#1b2130;
       color:white;
       padding:16px 16px 14px;
       box-shadow:0 4px 16px rgba(0,0,0,.18);
+      border-bottom:1px solid rgba(255,255,255,.06);
     }
-    .topbar-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
-    .top-title{font-size:20px;font-weight:700;line-height:1.2}
-    .top-sub{font-size:12px;opacity:.9;margin-top:4px}
-    .premium{
-      background:#fff;color:#333;border:none;border-radius:14px;
-      padding:10px 14px;font-weight:700;box-shadow:0 6px 16px rgba(0,0,0,.15);
-      cursor:pointer;font-size:13px;
+
+    .topbar-row{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px
     }
+
+    .top-title{
+      font-size:20px;
+      font-weight:700;
+      line-height:1.2
+    }
+
+    .top-sub{
+      font-size:12px;
+      opacity:.85;
+      margin-top:4px
+    }
+
     .page{padding:14px}
+
     .card{
-      background:var(--card);color:var(--text);border-radius:var(--radius);
-      box-shadow:var(--shadow);overflow:hidden;margin-bottom:16px;
+      background:var(--card);
+      color:var(--text);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+      margin-bottom:16px;
     }
 
-    /* exercise list */
     .exercise-row{
-      display:flex;align-items:center;min-height:126px;cursor:pointer;
-    }
-    .exercise-main{display:flex;align-items:center;gap:16px;flex:1;padding:18px}
-    .exercise-visual{
-      width:82px;height:82px;border-radius:22px;display:flex;align-items:center;justify-content:center;
-      font-size:42px;background:#fff7df;flex-shrink:0;
-      border:1px solid #f7e3a2;
-    }
-    .exercise-name{font-size:22px;font-weight:700;margin-bottom:6px}
-    .exercise-meta{font-size:14px;color:var(--muted);line-height:1.4}
-    .exercise-arrow{
-      width:70px;align-self:stretch;background:var(--accent);display:flex;align-items:center;justify-content:center;
-      color:white;font-size:30px;font-weight:bold;
+      display:flex;
+      align-items:center;
+      min-height:126px;
+      cursor:pointer;
     }
 
-    /* detail */
+    .exercise-main{
+      display:flex;
+      align-items:center;
+      gap:16px;
+      flex:1;
+      padding:18px
+    }
+
+    .exercise-visual{
+      width:82px;
+      height:82px;
+      border-radius:22px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:42px;
+      background:#edf1ff;
+      flex-shrink:0;
+      border:1px solid #dbe2ff;
+    }
+
+    .exercise-name{
+      font-size:22px;
+      font-weight:700;
+      margin-bottom:6px
+    }
+
+    .exercise-meta{
+      font-size:14px;
+      color:var(--muted);
+      line-height:1.4
+    }
+
+    .exercise-arrow{
+      width:70px;
+      align-self:stretch;
+      background:#e8ebf3;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:#596273;
+      font-size:30px;
+      font-weight:bold;
+    }
+
     .detail-head{
       padding:18px 18px 10px;
-      display:flex;align-items:center;justify-content:space-between;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
       color:var(--text);
     }
-    .detail-title{font-size:19px;font-weight:700}
-    .ring-wrap{padding:8px 18px 18px;display:flex;flex-direction:column;align-items:center}
-    .ring-box{position:relative;width:245px;height:245px}
-    .ring-box svg{display:block;width:100%;height:100%;transform:rotate(-90deg)}
-    .ring-center{
-      position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;
-      color:var(--text);text-align:center;
-    }
-    .ring-emoji{font-size:64px;line-height:1}
-    .goal-btn{
-      margin-top:10px;border:none;background:#fff;border-radius:999px;padding:8px 14px;
-      box-shadow:0 8px 18px rgba(0,0,0,.12);cursor:pointer;font-size:13px;font-weight:700;color:#555;
-    }
-    .big-count{font-size:58px;font-weight:300;color:var(--text)}
-    .big-count small{font-size:22px;color:#767676}
-    .muted-center{color:var(--muted);font-size:14px;margin-top:6px}
-    .step-btn{
-      background:var(--accent);color:white;border:none;border-radius:18px;
-      width:100%;padding:14px 14px;margin-top:10px;
-      display:flex;align-items:center;justify-content:space-between;
-      font-size:25px;font-weight:700;cursor:pointer;
-      box-shadow:0 8px 18px rgba(242,182,49,.28);
-    }
-    .step-btn .label{font-size:22px;font-weight:600}
-    .step-btn .mini{width:46px;text-align:center}
-    .section-title{
-      padding:18px 18px 6px;display:flex;align-items:center;justify-content:space-between;
-      color:var(--text);font-size:18px;font-weight:700
+
+    .detail-title{
+      font-size:19px;
+      font-weight:700
     }
 
-    /* charts */
-    .chart-wrap{padding:0 12px 12px}
+    .ring-wrap{
+      padding:8px 18px 18px;
+      display:flex;
+      flex-direction:column;
+      align-items:center
+    }
+
+    .ring-box{
+      position:relative;
+      width:245px;
+      height:245px
+    }
+
+    .ring-box svg{
+      display:block;
+      width:100%;
+      height:100%;
+      transform:rotate(-90deg)
+    }
+
+    .ring-center{
+      position:absolute;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex-direction:column;
+      color:var(--text);
+      text-align:center;
+    }
+
+    .ring-emoji{
+      font-size:64px;
+      line-height:1
+    }
+
+    .goal-btn{
+      margin-top:10px;
+      border:none;
+      background:white;
+      border-radius:999px;
+      padding:9px 14px;
+      box-shadow:0 8px 18px rgba(0,0,0,.10);
+      cursor:pointer;
+      font-size:13px;
+      font-weight:700;
+      color:#4d5563;
+    }
+
+    .big-count{
+      font-size:58px;
+      font-weight:300;
+      color:var(--text)
+    }
+
+    .big-count small{
+      font-size:22px;
+      color:#767676
+    }
+
+    .muted-center{
+      color:var(--muted);
+      font-size:14px;
+      margin-top:6px
+    }
+
+    .step-row{
+      width:100%;
+      margin-top:10px;
+      background:#eef1f7;
+      border:1px solid #dde3ee;
+      border-radius:18px;
+      display:flex;
+      align-items:center;
+      overflow:hidden;
+    }
+
+    .step-side{
+      width:64px;
+      height:62px;
+      border:none;
+      background:transparent;
+      font-size:30px;
+      font-weight:700;
+      cursor:pointer;
+      color:#4f5b70;
+    }
+
+    .step-side:hover{
+      background:#e3e8f2;
+    }
+
+    .step-center{
+      flex:1;
+      text-align:center;
+      font-size:24px;
+      font-weight:700;
+      color:#202533;
+      letter-spacing:.5px;
+    }
+
+    .section-title{
+      padding:18px 18px 6px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      color:var(--text);
+      font-size:18px;
+      font-weight:700
+    }
+
+    .chart-wrap{
+      padding:0 12px 12px
+    }
+
     .simple-chart{
-      height:190px;border-radius:18px;padding:12px 8px 8px;position:relative;
-      background:linear-gradient(180deg,#fafafa,#f4f4f4);
+      height:190px;
+      border-radius:18px;
+      padding:12px 8px 8px;
+      position:relative;
+      background:linear-gradient(180deg,#fafbfd,#f3f6fb);
       border:1px solid var(--border);
       overflow:hidden;
     }
+
     .gridline{
-      position:absolute;left:10px;right:10px;height:1px;background:#e8e8e8;
+      position:absolute;
+      left:10px;
+      right:10px;
+      height:1px;
+      background:#e8ebf0;
     }
+
     .bars{
-      position:absolute;left:8px;right:8px;bottom:28px;top:14px;
-      display:flex;align-items:flex-end;gap:8px;
+      position:absolute;
+      left:8px;
+      right:8px;
+      bottom:28px;
+      top:14px;
+      display:flex;
+      align-items:flex-end;
+      gap:8px;
     }
-    .bar-col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}
+
+    .bar-col{
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:flex-end;
+      height:100%
+    }
+
     .bar{
-      width:100%;max-width:34px;border-radius:10px 10px 0 0;
-      background:linear-gradient(180deg,var(--green),#11a884);
+      width:100%;
+      max-width:34px;
+      border-radius:10px 10px 0 0;
+      background:linear-gradient(180deg,var(--accent),var(--accent-dark));
       min-height:4px;
-      box-shadow:0 4px 10px rgba(24,194,156,.25);
+      box-shadow:0 4px 10px rgba(95,111,255,.22);
     }
-    .bar-val{font-size:12px;color:#777;margin-bottom:6px;height:14px}
-    .bar-label{position:absolute;bottom:-24px;font-size:11px;color:#777;white-space:nowrap}
-    .list{border-top:1px solid var(--border)}
+
+    .bar-val{
+      font-size:12px;
+      color:#777;
+      margin-bottom:6px;
+      height:14px
+    }
+
+    .bar-label{
+      position:absolute;
+      bottom:-24px;
+      font-size:11px;
+      color:#777;
+      white-space:nowrap
+    }
+
+    .list{
+      border-top:1px solid var(--border)
+    }
+
     .list-row{
-      display:flex;justify-content:space-between;align-items:center;
-      padding:16px 18px;border-top:1px solid var(--border);color:var(--text);font-size:16px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:16px 18px;
+      border-top:1px solid var(--border);
+      color:var(--text);
+      font-size:16px;
     }
-    .list-row .light{color:var(--muted)}
 
-    /* stats filters */
-    .filters{display:flex;gap:12px;margin-bottom:16px}
+    .filters{
+      display:flex;
+      gap:12px;
+      margin-bottom:16px
+    }
+
     .select{
-      flex:1;background:#3a3b42;border:1px solid #4a4b53;color:white;
-      border-radius:16px;padding:14px 12px;font-size:16px;outline:none;
+      flex:1;
+      background:#2d3340;
+      border:1px solid #404756;
+      color:white;
+      border-radius:16px;
+      padding:14px 12px;
+      font-size:16px;
+      outline:none;
     }
 
-    /* awards */
     .award{
-      padding:18px;border-radius:24px;background:white;color:var(--text);
-      box-shadow:var(--shadow);margin-bottom:14px;
-    }
-    .award.unlocked{
-      background:linear-gradient(135deg,#f7d97a,#f2b631);
-    }
-    .award-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
-    .award-title{font-size:20px;font-weight:700}
-    .award-desc{font-size:14px;color:#5d5d5d;margin-top:6px;line-height:1.35}
-    .award.unlocked .award-desc{color:#4b3a03}
-    .pill{
-      background:rgba(0,0,0,.08);padding:8px 12px;border-radius:999px;font-size:13px;font-weight:700;white-space:nowrap
-    }
-    .progress{
-      height:12px;background:rgba(0,0,0,.08);border-radius:999px;overflow:hidden;margin-top:14px
-    }
-    .progress > div{
-      height:100%;background:var(--green);border-radius:999px
+      padding:18px;
+      border-radius:24px;
+      background:white;
+      color:var(--text);
+      box-shadow:var(--shadow);
+      margin-bottom:14px;
     }
 
-    /* bottom nav */
+    .award.unlocked{
+      background:linear-gradient(135deg,#e4e9ff,#cfd7ff);
+    }
+
+    .award-head{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      align-items:flex-start
+    }
+
+    .award-title{
+      font-size:20px;
+      font-weight:700
+    }
+
+    .award-desc{
+      font-size:14px;
+      color:#5d6470;
+      margin-top:6px;
+      line-height:1.35
+    }
+
+    .pill{
+      background:rgba(0,0,0,.06);
+      padding:8px 12px;
+      border-radius:999px;
+      font-size:13px;
+      font-weight:700;
+      white-space:nowrap
+    }
+
+    .progress{
+      height:12px;
+      background:rgba(0,0,0,.08);
+      border-radius:999px;
+      overflow:hidden;
+      margin-top:14px
+    }
+
+    .progress > div{
+      height:100%;
+      background:var(--accent);
+      border-radius:999px
+    }
+
     .bottom-nav{
-      position:fixed;left:50%;transform:translateX(-50%);
-      bottom:0;width:100%;max-width:430px;background:#fff;color:#2b2b2b;
-      display:flex;justify-content:space-around;align-items:center;
+      position:fixed;
+      left:50%;
+      transform:translateX(-50%);
+      bottom:0;
+      width:100%;
+      max-width:430px;
+      background:#ffffff;
+      color:#2b2b2b;
+      display:flex;
+      justify-content:space-around;
+      align-items:center;
       padding:10px 6px calc(10px + env(safe-area-inset-bottom));
-      box-shadow:0 -6px 18px rgba(0,0,0,.12);z-index:50;
+      box-shadow:0 -6px 18px rgba(0,0,0,.12);
+      z-index:50;
       border-top:1px solid #ececec;
     }
+
     .nav-btn{
-      background:none;border:none;color:#555;display:flex;flex-direction:column;align-items:center;gap:6px;
-      font-size:12px;cursor:pointer;min-width:74px;
-    }
-    .nav-btn.active{color:var(--accent-dark);font-weight:700}
-    .nav-icon{font-size:22px;line-height:1}
-    .fab{
-      width:62px;height:62px;border-radius:50%;
-      border:none;background:var(--accent);color:#fff;font-size:34px;font-weight:700;
-      box-shadow:0 10px 22px rgba(242,182,49,.35);margin-top:-30px;cursor:pointer;
+      background:none;
+      border:none;
+      color:#5d6470;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:6px;
+      font-size:12px;
+      cursor:pointer;
+      min-width:90px;
     }
 
-    /* back button */
+    .nav-btn.active{
+      color:var(--accent-dark);
+      font-weight:700
+    }
+
+    .nav-icon{
+      font-size:22px;
+      line-height:1
+    }
+
     .back-btn{
-      border:none;background:rgba(255,255,255,.2);color:white;width:38px;height:38px;
-      border-radius:12px;font-size:20px;cursor:pointer
+      border:none;
+      background:rgba(255,255,255,.08);
+      color:white;
+      width:38px;
+      height:38px;
+      border-radius:12px;
+      font-size:20px;
+      cursor:pointer
     }
 
-    /* utility */
     .hidden{display:none}
-    .small-card{background:#fff;color:var(--text);border-radius:20px;box-shadow:var(--shadow);padding:18px}
-    .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
-    .metric-value{font-size:34px;font-weight:700}
-    .metric-label{color:var(--muted);font-size:14px;margin-top:6px}
+
+    .small-card{
+      background:#fff;
+      color:var(--text);
+      border-radius:20px;
+      box-shadow:var(--shadow);
+      padding:18px
+    }
+
+    .stats-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+      margin-top:14px
+    }
+
+    .metric-value{
+      font-size:34px;
+      font-weight:700
+    }
+
+    .metric-label{
+      color:var(--muted);
+      font-size:14px;
+      margin-top:6px
+    }
+
+    @media (max-width:360px){
+      .exercise-name{font-size:19px}
+      .step-center{font-size:21px}
+      .nav-btn{min-width:80px}
+    }
   </style>
 </head>
 <body>
@@ -203,7 +506,6 @@
             <div class="top-sub" id="topSub">Compteur simple et motivant</div>
           </div>
         </div>
-        <button class="premium">★ Local App</button>
       </div>
     </header>
 
@@ -211,34 +513,29 @@
 
     <nav class="bottom-nav">
       <button class="nav-btn active" data-tab="exercises">
-        <div class="nav-icon">⏱️</div>
+        <div class="nav-icon">🏋️</div>
         <div>Exercices</div>
       </button>
       <button class="nav-btn" data-tab="stats">
         <div class="nav-icon">📊</div>
         <div>Statistiques</div>
       </button>
-      <button class="fab" id="fabBtn">+</button>
       <button class="nav-btn" data-tab="awards">
         <div class="nav-icon">🏆</div>
         <div>Awards</div>
-      </button>
-      <button class="nav-btn" data-tab="goals">
-        <div class="nav-icon">🎯</div>
-        <div>Objectifs</div>
       </button>
     </nav>
   </div>
 
   <script>
-    const STORAGE_KEY = "easy-home-fitness-v2";
+    const STORAGE_KEY = "easy-home-fitness-v3";
 
     const EXERCISES = [
-      { id:"squats",   name:"Squats",   emoji:"🏋️", color:"#fff5d9" },
-      { id:"pushups",  name:"Push Ups", emoji:"💪", color:"#ffe6d6" },
-      { id:"situps",   name:"Sit Ups",  emoji:"🔥", color:"#ffe4df" },
-      { id:"lunges",   name:"Lunges",   emoji:"🦵", color:"#e8f8df" },
-      { id:"burpees",  name:"Burpees",  emoji:"⚡", color:"#dff4ff" },
+      { id:"squats",   name:"Squats",   emoji:"🏋️", color:"#edf1ff" },
+      { id:"pushups",  name:"Push Ups", emoji:"💪", color:"#efe9ff" },
+      { id:"situps",   name:"Sit Ups",  emoji:"🔥", color:"#e9f7ff" },
+      { id:"lunges",   name:"Lunges",   emoji:"🦵", color:"#eef7ec" },
+      { id:"burpees",  name:"Burpees",  emoji:"⚡", color:"#eef2f7" },
     ];
 
     const DEFAULT_GOALS = {
@@ -311,6 +608,11 @@
     }
 
     function getDates(days){
+      if(days === "all"){
+        const keys = Object.keys(state.history).sort();
+        if(keys.length === 0) return [todayKey()];
+        return keys;
+      }
       const arr = [];
       const now = new Date();
       for(let i=days-1;i>=0;i--){
@@ -395,6 +697,7 @@
           streak = 0;
         }
       }
+
       return { total, bestDaily, goalDays, streak: bestStreak, bestDay };
     }
 
@@ -425,8 +728,8 @@
       const offset = c * (1 - ratio);
       return `
         <svg viewBox="0 0 ${size} ${size}">
-          <circle cx="${size/2}" cy="${size/2}" r="${radius}" stroke="#d8f6ee" stroke-width="${stroke}" fill="none"></circle>
-          <circle cx="${size/2}" cy="${size/2}" r="${radius}" stroke="#18c29c" stroke-width="${stroke}" fill="none"
+          <circle cx="${size/2}" cy="${size/2}" r="${radius}" stroke="#dde4f7" stroke-width="${stroke}" fill="none"></circle>
+          <circle cx="${size/2}" cy="${size/2}" r="${radius}" stroke="${getComputedStyle(document.documentElement).getPropertyValue('--accent').trim()}" stroke-width="${stroke}" fill="none"
             stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${offset}"></circle>
         </svg>
       `;
@@ -484,12 +787,16 @@
       const value = getCount(today, exId);
       const goal = state.goals[exId];
       const series = getSeries(exId, 7);
+
       return `
         <div class="card">
           <div class="detail-head">
             <div class="detail-title">Progression du jour</div>
-            <button onclick="setGoal('${exId}')" style="border:none;background:#f5f5f5;padding:10px 12px;border-radius:12px;cursor:pointer">⚙️</button>
+            <button onclick="setGoal('${exId}')" style="border:none;background:#eef2ff;color:#4652c8;padding:10px 14px;border-radius:14px;cursor:pointer;font-weight:700">
+              🎯 Objectif
+            </button>
           </div>
+
           <div class="ring-wrap">
             <div class="ring-box">
               ${ringSvg(value, goal)}
@@ -498,27 +805,17 @@
                 <button class="goal-btn" onclick="setGoal('${exId}')">Objectif : ${goal}</button>
               </div>
             </div>
+
             <div class="big-count">${value} <small>/ ${goal}</small></div>
             <div class="muted-center">${ex.name}</div>
 
-            <button class="step-btn" onclick="addCount('${exId}',10)">
-              <span class="mini">＋</span><span class="label">Ajouter 10</span><span class="mini">10</span>
-            </button>
-            <button class="step-btn" onclick="addCount('${exId}',5)">
-              <span class="mini">＋</span><span class="label">Ajouter 5</span><span class="mini">5</span>
-            </button>
-            <button class="step-btn" onclick="addCount('${exId}',1)">
-              <span class="mini">＋</span><span class="label">Ajouter 1</span><span class="mini">1</span>
-            </button>
-            <button class="step-btn" onclick="addCount('${exId}',-10)">
-              <span class="mini">－</span><span class="label">Retirer 10</span><span class="mini">10</span>
-            </button>
-            <button class="step-btn" onclick="addCount('${exId}',-5)">
-              <span class="mini">－</span><span class="label">Retirer 5</span><span class="mini">5</span>
-            </button>
-            <button class="step-btn" onclick="addCount('${exId}',-1)">
-              <span class="mini">－</span><span class="label">Retirer 1</span><span class="mini">1</span>
-            </button>
+            ${[10,5,1].map(n=>`
+              <div class="step-row">
+                <button class="step-side" onclick="addCount('${exId}',-${n})">−</button>
+                <div class="step-center">${n}</div>
+                <button class="step-side" onclick="addCount('${exId}',${n})">+</button>
+              </div>
+            `).join("")}
           </div>
         </div>
 
@@ -545,7 +842,7 @@
     function renderStatsPage(){
       const exId = state.statsExercise;
       const ex = getExercise(exId);
-      const days = Number(state.statsDays);
+      const days = state.statsDays;
       const series = getSeries(exId, days);
       const sum = series.reduce((a,b)=>a+b.value,0);
       const totals = getTotals();
@@ -560,6 +857,7 @@
             <option value="7" ${days===7?"selected":""}>7 jours</option>
             <option value="30" ${days===30?"selected":""}>30 jours</option>
             <option value="90" ${days===90?"selected":""}>90 jours</option>
+            <option value="all" ${days==="all"?"selected":""}>All</option>
           </select>
         </div>
 
@@ -618,30 +916,11 @@
         <div class="small-card" style="margin-top:14px">
           <div style="font-size:18px;font-weight:700;color:#111">Réinitialiser</div>
           <div style="margin-top:8px;color:#666;line-height:1.4">Supprime tout l'historique enregistré localement sur cet appareil.</div>
-          <button onclick="resetAll()" style="margin-top:14px;width:100%;padding:14px;border:none;border-radius:16px;background:#111;color:white;font-size:16px;cursor:pointer">
+          <button onclick="resetAll()" style="margin-top:14px;width:100%;padding:14px;border:none;border-radius:16px;background:#12151b;color:white;font-size:16px;cursor:pointer">
             Supprimer l'historique
           </button>
         </div>
       `;
-    }
-
-    function renderGoalsPage(){
-      return EXERCISES.map(ex=>`
-        <div class="card">
-          <div class="exercise-row" style="min-height:110px;cursor:default">
-            <div class="exercise-main">
-              <div class="exercise-visual" style="background:${ex.color}">${ex.emoji}</div>
-              <div style="flex:1">
-                <div class="exercise-name">${ex.name}</div>
-                <div class="exercise-meta">Objectif actuel : ${state.goals[ex.id]} reps</div>
-              </div>
-              <button onclick="setGoal('${ex.id}')" style="border:none;background:var(--accent);color:white;padding:12px 14px;border-radius:14px;font-weight:700;cursor:pointer">
-                Modifier
-              </button>
-            </div>
-          </div>
-        </div>
-      `).join("");
     }
 
     function render(){
@@ -668,22 +947,20 @@
           topSub.textContent = "Choisis un exercice";
           page.innerHTML = renderExerciseList();
         }
+
         if(state.currentTab === "stats"){
           topTitle.textContent = "Mes statistiques";
           topSub.textContent = "Historique et progression";
           page.innerHTML = renderStatsPage();
         }
+
         if(state.currentTab === "awards"){
           topTitle.textContent = "Awards";
           topSub.textContent = "Objectifs récompensés";
           page.innerHTML = renderAwardsPage();
         }
-        if(state.currentTab === "goals"){
-          topTitle.textContent = "Objectifs";
-          topSub.textContent = "Modifier les objectifs journaliers";
-          page.innerHTML = renderGoalsPage();
-        }
       }
+
       saveState();
     }
 
@@ -714,7 +991,7 @@
     }
 
     function changeStatsDays(value){
-      state.statsDays = Number(value);
+      state.statsDays = value === "all" ? "all" : Number(value);
       saveState();
       render();
     }
@@ -730,9 +1007,6 @@
     document.getElementById("backBtn").addEventListener("click", closeExercise);
     document.querySelectorAll(".nav-btn").forEach(btn=>{
       btn.addEventListener("click", ()=>switchTab(btn.dataset.tab));
-    });
-    document.getElementById("fabBtn").addEventListener("click", ()=>{
-      switchTab("exercises");
     });
 
     render();
